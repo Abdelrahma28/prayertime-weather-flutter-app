@@ -1,23 +1,15 @@
 import 'package:flutter/material.dart';
-import '../screens/weather-screen.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import '/custom-icons/my_icons_icons.dart';
+import 'package:weatherapp2/custom-icons/my_icons_icons.dart';
+import 'package:weatherapp2/screens/weather-screen.dart';
 
 class NavBar extends StatefulWidget {
-  NavBar({Key? key}) : super(key: key);
+  final weatherData;
+
+  NavBar({required this.weatherData});
+
   static const TextStyle optionStyle =
       TextStyle(fontSize: 26, fontWeight: FontWeight.w400);
-  static const List<Widget> _widgetOptions = <Widget>[
-    WeatherPage(),
-    Text(
-      'Search',
-      style: optionStyle,
-    ),
-    Text(
-      'Settings',
-      style: optionStyle,
-    ),
-  ];
 
   @override
   State<NavBar> createState() => _NavBarState();
@@ -25,12 +17,31 @@ class NavBar extends StatefulWidget {
 
 class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
+  late final List<Widget> _widgetOptions;
+
+  @override
+  void initState() {
+    super.initState();
+    _widgetOptions = <Widget>[
+      WeatherPage(
+        locationWeather: widget.weatherData,
+      ),
+      Text(
+        'Search',
+        // style: optionStyle,
+      ),
+      Text(
+        'Settings',
+        // style: optionStyle,
+      ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blueAccent,
-      body: NavBar._widgetOptions[_selectedIndex],
+      body: _widgetOptions[_selectedIndex],
       bottomNavigationBar: Container(
         margin: const EdgeInsets.only(bottom: 16, left: 25, right: 25),
         height: 65,

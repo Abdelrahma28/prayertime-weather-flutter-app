@@ -5,10 +5,24 @@ import '../Widgets/date-icons.dart';
 import '../Widgets/prayer-time.dart';
 import '../Widgets/weather-stack.dart';
 
-class WeatherPage extends StatelessWidget {
-  const WeatherPage({Key? key}) : super(key: key);
+class WeatherPage extends StatefulWidget {
+  WeatherPage({this.locationWeather});
+  final locationWeather;
 
+  double temperature = 0.0;
+  double condition = 0.0;
+  String cityName = '';
 
+  @override
+  State<WeatherPage> createState() => _WeatherPageState();
+}
+
+class _WeatherPageState extends State<WeatherPage> {
+  @override
+  void init() {
+    super.initState();
+    print(widget.locationWeather);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +47,12 @@ class WeatherPage extends StatelessWidget {
                       textBaseline: TextBaseline.alphabetic,
                       children: [
                         WindHumidityWidget(label: 'Wind', value: '9 Km/h'),
-                        PrayerTime(label: 'Fajr',time: '3:31'),
+                        GestureDetector(
+                          onTap: () {
+                            print(widget.locationWeather);
+                          },
+                          child: PrayerTime(label: 'Fajr', time: '3:31'),
+                        ),
                         WindHumidityWidget(label: 'Humidity', value: '79%'),
                       ],
                     ),
