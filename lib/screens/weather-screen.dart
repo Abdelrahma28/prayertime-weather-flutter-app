@@ -6,24 +6,15 @@ import '../Widgets/prayer-time.dart';
 import '../Widgets/weather-stack.dart';
 
 class WeatherPage extends StatefulWidget {
-  WeatherPage({this.locationWeather});
+  WeatherPage({this.locationWeather, this.prayerTime});
+  final prayerTime;
   final locationWeather;
-
-  double temperature = 0.0;
-  double condition = 0.0;
-  String cityName = '';
 
   @override
   State<WeatherPage> createState() => _WeatherPageState();
 }
 
 class _WeatherPageState extends State<WeatherPage> {
-  @override
-  void init() {
-    super.initState();
-    print(widget.locationWeather);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -35,7 +26,10 @@ class _WeatherPageState extends State<WeatherPage> {
             child: Column(
               children: [
                 Expanded(
-                  child: WeatherStack(),
+                  child: WeatherStack(
+                    cityName: widget.locationWeather['name'],
+                    degree: widget.locationWeather['main']['temp'],
+                  ),
                   flex: 5,
                 ),
                 Expanded(
@@ -46,14 +40,25 @@ class _WeatherPageState extends State<WeatherPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       textBaseline: TextBaseline.alphabetic,
                       children: [
-                        WindHumidityWidget(label: 'Wind', value: '9 Km/h'),
+                        WindHumidityWidget(
+                            label: 'Wind  Speed',
+                            value:
+                                '${widget.locationWeather['wind']['speed'].toString()} Km/h'),
                         GestureDetector(
                           onTap: () {
                             print(widget.locationWeather);
+                            print(widget.locationWeather['main']['humidity']);
                           },
-                          child: PrayerTime(label: 'Fajr', time: '3:31'),
+                          child: PrayerTime(
+                              label: 'Fajr',
+                              time: widget.prayerTime['data']['timings']
+                                  ['Fajr']),
                         ),
-                        WindHumidityWidget(label: 'Humidity', value: '79%'),
+                        WindHumidityWidget(
+                            label: 'Humidity',
+                            value:
+                                '${widget.locationWeather['main']['humidity']}%'
+                                    .toString()),
                       ],
                     ),
                   ),

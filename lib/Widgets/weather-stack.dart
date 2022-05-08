@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'Wind-humidity.dart';
+
 import 'Degree.dart';
 
 class WeatherStack extends StatelessWidget {
-  const WeatherStack({
-    Key? key,
-  }) : super(key: key);
-
+  const WeatherStack({Key? key, required this.degree, required this.cityName})
+      : super(key: key);
+  final double degree;
+  final String cityName;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -18,7 +18,7 @@ class WeatherStack extends StatelessWidget {
         Column(
           children: [
             Text(
-              'Los Angeles',
+              cityName,
               style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.w500),
             ),
             SizedBox(
@@ -31,7 +31,7 @@ class WeatherStack extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                   color: Colors.white.withOpacity(0.6)),
             ),
-            const DegreeWidget(degree: ' 28°'),
+            DegreeWidget(degree: degree.toInt().toString()),
           ],
         ),
         Positioned(

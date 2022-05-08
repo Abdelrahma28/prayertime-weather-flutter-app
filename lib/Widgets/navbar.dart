@@ -5,8 +5,9 @@ import 'package:weatherapp2/screens/weather-screen.dart';
 
 class NavBar extends StatefulWidget {
   final weatherData;
+  final prayerTime;
 
-  NavBar({required this.weatherData});
+  NavBar({required this.weatherData, required this.prayerTime});
 
   static const TextStyle optionStyle =
       TextStyle(fontSize: 26, fontWeight: FontWeight.w400);
@@ -25,6 +26,7 @@ class _NavBarState extends State<NavBar> {
     _widgetOptions = <Widget>[
       WeatherPage(
         locationWeather: widget.weatherData,
+        prayerTime: widget.prayerTime,
       ),
       Text(
         'Search',

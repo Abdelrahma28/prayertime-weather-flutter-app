@@ -39,12 +39,17 @@ class _LoadingScreenState extends State<LoadingScreen> {
     //create network object to get decoded data
     NetworkHelper networkHelper = NetworkHelper(url: url);
     var weatherData = await networkHelper.getWeatherData();
+    String country = weatherData['sys']['country'];
+
+    String city = weatherData['name'];
+    var prayerData = await networkHelper.getPrayerData(city, country);
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) {
           return NavBar(
             weatherData: weatherData,
+            prayerTime: prayerData,
           );
         },
       ),
