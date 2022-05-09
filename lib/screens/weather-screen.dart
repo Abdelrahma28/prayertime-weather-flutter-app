@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../Widgets/Wind-humidity.dart';
 import '../Widgets/date-icons.dart';
@@ -17,6 +18,23 @@ class WeatherPage extends StatefulWidget {
 class _WeatherPageState extends State<WeatherPage> {
   @override
   Widget build(BuildContext context) {
+    final now = DateTime.now();
+    String deviceTimeHours = DateFormat('H').format(now);
+    String deviceTimeMinutes = DateFormat('m').format(now);
+    int d = int.parse(deviceTimeHours);
+    String apiTime = widget.prayerTime['data']['timings']['Maghrib'];
+    var prayerTimeHours = DateFormat.Hm().parse(apiTime).hour;
+    var prayerTimeMinutes = DateFormat.Hm().parse(apiTime).minute;
+    String timeConverter() {
+      var currentPrayer = '';
+      if (prayerTimeHours < d) {
+        return currentPrayer = prayerTimeHours.toString();
+      } else {
+        return currentPrayer = deviceTimeHours.toString();
+      }
+    }
+
+    String time = timeConverter();
     return Center(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -49,10 +67,7 @@ class _WeatherPageState extends State<WeatherPage> {
                             print(widget.locationWeather);
                             print(widget.locationWeather['main']['humidity']);
                           },
-                          child: PrayerTime(
-                              label: 'Fajr',
-                              time: widget.prayerTime['data']['timings']
-                                  ['Fajr']),
+                          child: PrayerTime(label: 'Fajr', time: time),
                         ),
                         WindHumidityWidget(
                             label: 'Humidity',
