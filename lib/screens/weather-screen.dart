@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:weatherapp2/utilities/current-prayer-time.dart';
 
 import '../Widgets/Wind-humidity.dart';
 import '../Widgets/date-icons.dart';
@@ -16,25 +16,18 @@ class WeatherPage extends StatefulWidget {
 }
 
 class _WeatherPageState extends State<WeatherPage> {
+  String prayer = '';
+  String label = '';
+  @override
+  void initState() {
+    CurrentPrayer currentPrayer = CurrentPrayer(prayerTime: widget.prayerTime);
+    prayer = currentPrayer.timeCalculator();
+    label = currentPrayer.label;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final now = DateTime.now();
-    String deviceTimeHours = DateFormat('H').format(now);
-    String deviceTimeMinutes = DateFormat('m').format(now);
-    int d = int.parse(deviceTimeHours);
-    String apiTime = widget.prayerTime['data']['timings']['Maghrib'];
-    var prayerTimeHours = DateFormat.Hm().parse(apiTime).hour;
-    var prayerTimeMinutes = DateFormat.Hm().parse(apiTime).minute;
-    String timeConverter() {
-      var currentPrayer = '';
-      if (prayerTimeHours < d) {
-        return currentPrayer = prayerTimeHours.toString();
-      } else {
-        return currentPrayer = deviceTimeHours.toString();
-      }
-    }
-
-    String time = timeConverter();
     return Center(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -67,7 +60,7 @@ class _WeatherPageState extends State<WeatherPage> {
                             print(widget.locationWeather);
                             print(widget.locationWeather['main']['humidity']);
                           },
-                          child: PrayerTime(label: 'Fajr', time: time),
+                          child: PrayerTime(label: label, time: prayer),
                         ),
                         WindHumidityWidget(
                             label: 'Humidity',
