@@ -30,8 +30,6 @@ class NetworkHelper {
     if (response.statusCode == 200) {
       String data = response.body;
       var prayerDecodedData = jsonDecode(data);
-      var prayerTimings = prayerDecodedData['data']['timings'];
-      print(prayerTimings);
       return prayerDecodedData;
     } else {
       print('prayer code ${response.statusCode}');

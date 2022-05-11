@@ -7,7 +7,9 @@ class CurrentPrayer {
   String currentPray(String curr) {
     label = curr;
     String data = prayerTime['data']['timings'][curr];
-    return prayerTime['data']['timings'][curr];
+    DateTime timeConversion = DateFormat.Hm().parse(data);
+    String currPrayer = DateFormat('h:mm').format(timeConversion);
+    return currPrayer;
   }
 
   String timeCalculator() {
@@ -15,7 +17,8 @@ class CurrentPrayer {
     //get current time
     DateTime now = DateTime.now();
     //convert DateTime to String
-    String deviceTimeHours = DateFormat('hm').format(now);
+    String deviceTimeHours = DateFormat('hmm').format(now);
+    print(deviceTimeHours);
     //convert String DateTime to Int
     int deviceTimeInt = int.parse(deviceTimeHours);
     if (deviceTimeInt >= 328 && deviceTimeInt < 1157) {

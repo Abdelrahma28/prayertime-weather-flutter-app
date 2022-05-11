@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:weatherapp2/utilities/current-prayer-time.dart';
 
 import '../Widgets/Wind-humidity.dart';
@@ -18,11 +19,14 @@ class WeatherPage extends StatefulWidget {
 class _WeatherPageState extends State<WeatherPage> {
   String prayer = '';
   String label = '';
+  String currDate = '';
   @override
   void initState() {
     CurrentPrayer currentPrayer = CurrentPrayer(prayerTime: widget.prayerTime);
     prayer = currentPrayer.timeCalculator();
     label = currentPrayer.label;
+    var data = DateTime.now();
+    currDate = DateFormat('EEE, MMM d').format(data);
     super.initState();
   }
 
@@ -72,7 +76,7 @@ class _WeatherPageState extends State<WeatherPage> {
                   ),
                 ),
                 Expanded(
-                  child: DateWidget(),
+                  child: DateWidget(currDate: currDate),
                 ),
               ],
             ),
