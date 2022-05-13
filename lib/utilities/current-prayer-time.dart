@@ -1,36 +1,57 @@
+import 'dart:html';
+
 import 'package:intl/intl.dart';
 
-class CurrentPrayer {
-  final prayerTime;
-  CurrentPrayer({required this.prayerTime});
+class PrayerTime {
+  final apiPrayerData;
+
+  PrayerTime({required this.apiPrayerData});
+
   String label = '';
-  String currentPray(String curr) {
+
+  String currentPrayer(String curr) {
     label = curr;
-    String data = prayerTime['data']['timings'][curr];
+    String data = apiPrayerData['data']['timings'][curr];
     DateTime timeConversion = DateFormat.Hm().parse(data);
     String currPrayer = DateFormat('h:mm').format(timeConversion);
     return currPrayer;
   }
 
-  String timeCalculator() {
-    String currentPrayer = '';
-    //get current time
-    DateTime now = DateTime.now();
-    //convert DateTime to String
-    String deviceTimeHours = DateFormat('hmm').format(now);
-    print(deviceTimeHours);
-    //convert String DateTime to Int
-    int deviceTimeInt = int.parse(deviceTimeHours);
-    if (deviceTimeInt >= 328 && deviceTimeInt < 1157) {
-      return currentPrayer = currentPray('Dhuhr');
-    } else if (deviceTimeInt >= 1157 && deviceTimeInt < 1536) {
-      return currentPrayer = currentPray('Asr');
-    } else if (deviceTimeInt >= 1335 && deviceTimeInt < 1846) {
-      return currentPrayer = currentPray('Maghrib');
-    } else if (deviceTimeInt >= 1846 && deviceTimeInt < 2015) {
-      return currentPrayer = currentPray('Isha');
+  String PrayerTimeCalculator() {
+    String dateTime = DateFormat('HH:mm').format(DateTime.now());
+    DateTime deviceTime = DateFormat("HH:mm").parse(dateTime);
+    DateTime getDhuhrTime = getConvertedPrayerTime('Dhuhr');
+    DateTime getFajrTime = getConvertedPrayerTime('Fajr');
+    DateTime getAsrTime = getConvertedPrayerTime('Asr');
+    DateTime getMaghribTime = getConvertedPrayerTime('Maghrib');
+    DateTime getIshaTime = getConvertedPrayerTime('Isha');
+
+    print(apiPrayerData['data']['timings']);
+    print(deviceTime);
+    if (deviceTime.isBefore(getDhuhrTime) && deviceTime.isAfter(getFajrTime)) {
+      return currentPrayer('Dhuhr');
+    } else if (deviceTime.isBefore(getAsrTime) &&
+        deviceTime.isAfter(getDhuhrTime)) {
+      return currentPrayer('Asr');
+    } else if (deviceTime.isBefore(getMaghribTime) &&
+        deviceTime.isAfter(getAsrTime)) {
+      return currentPrayer('Maghrib');
+    } else if (deviceTime.isBefore(getIshaTime) &&
+        deviceTime.isAfter(getMaghribTime)) {
+      return currentPrayer('Isha');
     } else {
-      return currentPrayer = currentPray('Fajr');
+      return currentPrayer('Fajr');
     }
+  }
+
+  DateTime getConvertedPrayerTime(String currentPrayer) {
+    String apiDate = getPrayerTime(currentPrayer);
+    DateTime apiTime = DateFormat('hh:mm').parse(apiDate);
+
+    return apiTime;
+  }
+
+  String getPrayerTime(String curr) {
+    return apiPrayerData['data']['timings'][curr];
   }
 }

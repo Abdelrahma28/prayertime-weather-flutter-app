@@ -6,9 +6,6 @@ import 'package:weatherapp2/services/networking.dart';
 import '../Widgets/navbar.dart';
 
 const apiKey = 'fba4925a3b0974cd776fd2035ea3199c';
-// DateTime dateTime = DateTime.now();
-// String formattedTime =DateFormat.Hms().format(dateTime);
-// print(formattedTime);
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({Key? key}) : super(key: key);
@@ -18,9 +15,6 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  double longitude = 0.0;
-  double latitude = 0.0;
-
   @override
   void initState() {
     super.initState();
@@ -31,10 +25,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
     //Fetch user location to get longitude and latitude
     Location location = Location();
     await location.getCurrentLocation();
-    longitude = location.lon;
-    latitude = location.lat;
     final url =
-        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey';
+        'https://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.lon}&appid=$apiKey&units=metric';
 
     //create network object to get decoded data
     NetworkHelper networkHelper = NetworkHelper(url: url);

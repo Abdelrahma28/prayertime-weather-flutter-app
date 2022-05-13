@@ -17,7 +17,8 @@ class NetworkHelper {
       var decodedData = jsonDecode(data);
       return decodedData;
     } else {
-      print(response.statusCode);
+      print('Weather code ${response.statusCode}');
+    }
     }
   }
 
@@ -32,7 +33,7 @@ class NetworkHelper {
       var prayerDecodedData = jsonDecode(data);
       return prayerDecodedData;
     } else {
-      print('prayer code ${response.statusCode}');
+      print('Prayer code ${response.statusCode}');
     }
   }
 }

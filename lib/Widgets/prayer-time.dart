@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class PrayerTime extends StatelessWidget {
-  PrayerTime({required this.label,required this.time});
+class PrayerTimeWidget extends StatelessWidget {
+  PrayerTimeWidget({required this.label, required this.time});
   final String label;
   final String time;
   @override

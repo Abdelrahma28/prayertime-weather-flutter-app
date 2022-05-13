@@ -40,7 +40,7 @@ class Location {
 
     try {
       Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
+          desiredAccuracy: LocationAccuracy.low);
       lat = position.latitude;
       lon = position.longitude;
     } catch (e) {

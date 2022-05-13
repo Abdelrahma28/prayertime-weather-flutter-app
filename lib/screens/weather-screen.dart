@@ -8,26 +8,45 @@ import '../Widgets/prayer-time.dart';
 import '../Widgets/weather-stack.dart';
 
 class WeatherPage extends StatefulWidget {
-  WeatherPage({this.locationWeather, this.prayerTime});
-  final prayerTime;
-  final locationWeather;
+  const WeatherPage({this.locationWeather, this.locationPrayer});
+  final dynamic locationPrayer;
+  final dynamic locationWeather;
 
   @override
   State<WeatherPage> createState() => _WeatherPageState();
 }
 
 class _WeatherPageState extends State<WeatherPage> {
-  String prayer = '';
+  String cityName = '';
+  String temperature = '';
+  double windSpeed = 0.0;
+  int humidity = 0;
+  int condition = 0;
+  String time = '';
   String label = '';
   String currDate = '';
+
   @override
   void initState() {
-    CurrentPrayer currentPrayer = CurrentPrayer(prayerTime: widget.prayerTime);
-    prayer = currentPrayer.timeCalculator();
-    label = currentPrayer.label;
-    var data = DateTime.now();
-    currDate = DateFormat('EEE, MMM d').format(data);
+    updateUI(widget.locationWeather, widget.locationPrayer);
     super.initState();
+  }
+
+  void updateUI(dynamic weatherData, dynamic prayerData) {
+    //WeatherData
+    double temp = weatherData['main']['temp'];
+    temperature = temp.toInt().toString();
+    condition = weatherData['weather'][0]['id'];
+    cityName = weatherData['name'];
+    windSpeed = widget.locationWeather['wind']['speed'];
+    humidity = widget.locationWeather['main']['humidity'];
+    //PrayerData
+    PrayerTime prayerTime = PrayerTime(apiPrayerData: prayerData);
+    time = prayerTime.PrayerTimeCalculator();
+    label = prayerTime.label;
+    var data = DateTime.now();
+    //Current Date
+    currDate = DateFormat('EEEE, MMM d').format(data);
   }
 
   @override
@@ -36,14 +55,14 @@ class _WeatherPageState extends State<WeatherPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SizedBox(height: 20.0),
+          const SizedBox(height: 20.0),
           Expanded(
             child: Column(
               children: [
                 Expanded(
                   child: WeatherStack(
-                    cityName: widget.locationWeather['name'],
-                    degree: widget.locationWeather['main']['temp'],
+                    cityName: cityName,
+                    degree: temperature,
                   ),
                   flex: 5,
                 ),
@@ -57,20 +76,13 @@ class _WeatherPageState extends State<WeatherPage> {
                       children: [
                         WindHumidityWidget(
                             label: 'Wind  Speed',
-                            value:
-                                '${widget.locationWeather['wind']['speed'].toString()} Km/h'),
-                        GestureDetector(
-                          onTap: () {
-                            print(widget.locationWeather);
-                            print(widget.locationWeather['main']['humidity']);
-                          },
-                          child: PrayerTime(label: label, time: prayer),
+                            value: '${windSpeed.toString()} Km/h'),
+                        PrayerTimeWidget(
+                          label: label,
+                          time: time,
                         ),
                         WindHumidityWidget(
-                            label: 'Humidity',
-                            value:
-                                '${widget.locationWeather['main']['humidity']}%'
-                                    .toString()),
+                            label: 'Humidity', value: '$humidity%'.toString()),
                       ],
                     ),
                   ),
@@ -86,6 +98,3 @@ class _WeatherPageState extends State<WeatherPage> {
     );
   }
 }
-// double temperature = decodedData['main']['temp'];
-// double condition = decodedData['weather'][0]['id'];
-// double cityName = decodedData['name'];

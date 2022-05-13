@@ -5,7 +5,7 @@ import 'Degree.dart';
 class WeatherStack extends StatelessWidget {
   const WeatherStack({Key? key, required this.degree, required this.cityName})
       : super(key: key);
-  final double degree;
+  final String degree;
   final String cityName;
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class WeatherStack extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                   color: Colors.white.withOpacity(0.6)),
             ),
-            DegreeWidget(degree: degree.toInt().toString()),
+            DegreeWidget(degree: "$degree°"),
           ],
         ),
         Positioned(
